@@ -55,6 +55,9 @@ void Lab3::Init()
     // Initialize angularStep
     angularStep = 0;
 
+    repeatTime = 1;
+    add = true;
+
     Mesh* square1 = object2D::CreateSquare("square1", corner, squareSide, glm::vec3(1, 0, 0), true);
     AddMeshToList(square1);
 
@@ -85,8 +88,23 @@ void Lab3::Update(float deltaTimeSeconds)
     // class header, and if you need more of them to complete the task,
     // add them over there!
 
-    modelMatrix = glm::mat3(1);
-    modelMatrix *= transform2D::Translate(150, 250);
+    if (repeatTime >= 1.2f) {
+        add = false;
+    }
+    if (repeatTime <= 0.9f) {
+        add = true;
+    }
+    if (add) {
+        repeatTime += deltaTimeSeconds;
+    }
+    else {
+        repeatTime -= deltaTimeSeconds;
+    }
+
+    modelMatrix = transform2D::Translate(200, 300) 
+        * transform2D::Scale(scaleX * repeatTime, scaleY * repeatTime)
+        * transform2D::Translate(-50, -50) * glm::mat3(1);
+
     // TODO(student): Create animations by multiplying the current
     // transform matrix with the matrices you just implemented.
     // Remember, the last matrix in the chain will take effect first!
@@ -94,15 +112,17 @@ void Lab3::Update(float deltaTimeSeconds)
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 
     modelMatrix = glm::mat3(1);
-    modelMatrix *= transform2D::Translate(400, 250);
+    modelMatrix *= transform2D::Translate(400, 250) * transform2D :: Translate(0, 500 * (repeatTime - 1));
     // TODO(student): Create animations by multiplying the current
     // transform matrix with the matrices you just implemented
     // Remember, the last matrix in the chain will take effect first!
 
     RenderMesh2D(meshes["square2"], shaders["VertexColor"], modelMatrix);
 
+    angularStep += deltaTimeSeconds;
     modelMatrix = glm::mat3(1);
-    modelMatrix *= transform2D::Translate(650, 250);
+    modelMatrix *= transform2D::Translate(700, 300) 
+        * transform2D::Rotate(angularStep) * transform2D::Translate(-50, -50);
     // TODO(student): Create animations by multiplying the current
     // transform matrix with the matrices you just implemented
     // Remember, the last matrix in the chain will take effect first!

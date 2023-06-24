@@ -141,6 +141,7 @@ unsigned int FrameBuffer::GetNumberOfRenderTargets() const
 void FrameBuffer::BindTexture(int textureID, unsigned int TextureUnit) const
 {
     textures[textureID].BindToTextureUnit(TextureUnit);
+    //glUniform1i(textureID, GL_TEXTURE0 + TextureUnit);
 }
 
 
@@ -172,6 +173,7 @@ void FrameBuffer::BindAllTextures() const
 {
     for (unsigned int i = 0; i < nrTextures; i++) {
         textures[i].BindToTextureUnit(GL_TEXTURE0 + i);
+        //glUniform1i(i, GL_TEXTURE0 + i);
     }
 }
 

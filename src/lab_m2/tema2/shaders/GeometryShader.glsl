@@ -9,6 +9,7 @@ layout(triangle_strip, max_vertices = 256) out;
 // Uniform properties
 uniform mat4 View;
 uniform mat4 Projection;
+uniform mat4 Model;
 uniform vec3 control_p0, control_p1, control_p2, control_p3;
 uniform int no_of_instances, no_of_generated_points;
 // TODO(student): Declare any other uniforms here
@@ -67,7 +68,7 @@ void main()
     // with different transformation types.
     const int SURFACE_TYPE = SURFACE_TYPE_ROTATION;
 
-    if (instance[0] < no_of_instances)
+    if (instance[0] <= no_of_instances)
     {
         // TODO(student): Rather than emitting vertices for the control
         // points, you must emit vertices that approximate the curve itself.
@@ -75,9 +76,9 @@ void main()
         float distance = 6.28 / no_of_instances;
         for (float t = 0; t <= 1; t += step)
         {
-            gl_Position = Projection * View * vec4(rotateY(bezier(t), distance * instance[0]), 1);
+            gl_Position = Projection * View * vec4(rotateY(bezier(t), distance * instance[0]), 1);   
             EmitVertex();
-            gl_Position = Projection * View * vec4(rotateY(bezier(t), distance * (instance[0] + 1)), 1);
+            gl_Position = Projection * View * vec4(rotateY(bezier(t), distance * (instance[0]+1)), 1);
             EmitVertex();
         }
         //gl_Position = Projection * View * vec4(translateX(control_p0, instance[0]), 1);   EmitVertex();

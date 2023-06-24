@@ -31,6 +31,7 @@ namespace m2
         void OnMouseScroll(int mouseX, int mouseY, int offsetX, int offsetY) override;
         void OnWindowResize(int width, int height) override;
 
+        FrameBuffer* frame_buffer;
         // TODO(student): Declare the frame buffer, and any other class members here.
     };
 }   // namespace m2

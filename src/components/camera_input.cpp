@@ -9,6 +9,7 @@
 gfxc::CameraInput::CameraInput(Camera *camera)
 {
     this->camera = camera;
+
 }
 
 

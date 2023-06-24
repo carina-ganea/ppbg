@@ -10,6 +10,7 @@ layout(location = 3) in vec3 v_color;
 uniform mat4 Model;
 uniform mat4 View;
 uniform mat4 Projection;
+uniform vec3 carPos;
 
 // Output
 out vec3 frag_normal;
@@ -22,5 +23,9 @@ void main()
     frag_normal = v_normal;
     frag_color = v_color;
     tex_coord = v_texture_coord;
-    gl_Position = Projection * View * Model * vec4(v_position, 1.0);
+    vec3 position =  (Model * vec4(v_position, 1.0)).xyz;
+    position = vec3(position.x, position.y - (pow(length(carPos - position), 2) * 0.01), position.z); 
+
+    gl_Position = Projection * View * vec4(position, 1.0);
+    
 }

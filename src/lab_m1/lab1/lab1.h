@@ -1,7 +1,8 @@
 #pragma once
 
 #include "components/simple_scene.h"
-
+#include <string>
+using namespace std;
 
 namespace m1
 {
@@ -28,6 +29,10 @@ namespace m1
         void OnWindowResize(int width, int height) override;
 
         // TODO(student): Class variables go here
+        float red, green, blue = (0, 0, 0);
+        int counter;
+        float x, y, z;
+        std::string cycle[3];
 
     };
 }   // namespace m1

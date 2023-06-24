@@ -109,7 +109,7 @@ void Lab5::FrameEnd()
 }
 
 
-void Lab5::RenderMesh(Mesh * mesh, Shader * shader, const glm::mat4 & modelMatrix)
+void Lab5::RenderMesh(Mesh * mesh, Shader * shader, const glm::mat4 & modelMatrix, glm::vec3 carPos)
 {
     if (!mesh || !shader || !shader->program)
         return;

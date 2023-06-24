@@ -25,6 +25,7 @@ class ParticleEffect
     virtual void Generate(unsigned int particleCount, bool createLocalBuffer = false);
     virtual void FillRandomData(std::function<T(void)> generator);
     virtual void Render(gfxc::Camera *camera, Shader *shader, unsigned int nrParticles = -1);
+    virtual void RenderInstanced(glm::mat4* ModelMatrix, glm::mat4* ViewMatrix, glm::mat4* ProjectionMatrix, glm::vec3* WorldPosition, Shader* shader, unsigned int nrParticles, unsigned int nrInstances);
 
     virtual SSBO<T>* GetParticleBuffer() const
     {
@@ -80,6 +81,22 @@ void ParticleEffect<T>::Render(gfxc::Camera *camera, Shader *shader, unsigned in
     glDrawElements(GL_POINTS, MIN(particleCount, nrParticles), GL_UNSIGNED_INT, 0);
 }
 
+template <class T>
+void ParticleEffect<T>::RenderInstanced(glm::mat4* ModelMatrix, glm::mat4* ViewMatrix, glm::mat4* ProjectionMatrix, glm::vec3* WorldPosition, Shader* shader, unsigned int nrParticles, unsigned int nrInstances)
+{
+    // Bind MVP
+    glUniformMatrix4fv(shader->loc_model_matrix, 10, GL_FALSE, glm::value_ptr(ModelMatrix[0]));
+    glUniformMatrix4fv(shader->loc_view_matrix, 6, false, glm::value_ptr(ViewMatrix[0]));
+    glUniformMatrix4fv(shader->loc_projection_matrix, 6, false, glm::value_ptr(ProjectionMatrix[0]));
+    glUniform3fv(shader->loc_eye_pos, 6, glm::value_ptr(WorldPosition[0]));
+
+    // Bind Particle Storage
+    particles->BindBuffer(0);
+
+    // Render Particles
+    glBindVertexArray(VAO);
+    glDrawElementsInstanced(GL_POINTS, MIN(particleCount, nrParticles), GL_UNSIGNED_INT, (void*)0, nrInstances);
+}
 
 template <class T>
 void ParticleEffect<T>::Generate(unsigned int particleCount, bool createLocalBuffer)

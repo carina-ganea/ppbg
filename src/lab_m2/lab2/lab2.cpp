@@ -127,6 +127,7 @@ void Lab2::Update(float deltaTimeSeconds)
     glUniform3f(glGetUniformLocation(shader->program, "control_p2"), control_p2.x, control_p2.y, control_p2.z);
     glUniform3f(glGetUniformLocation(shader->program, "control_p3"), control_p3.x, control_p3.y, control_p3.z);
     glUniform1i(glGetUniformLocation(shader->program, "no_of_instances"), no_of_instances);
+    glUniform1i(glGetUniformLocation(shader->program, "no_of_generated_points"), no_of_generated_points);
 
     // TODO(student): Send to the shaders the number of points that approximate
     // a curve (no_of_generated_points), as well as the characteristics for

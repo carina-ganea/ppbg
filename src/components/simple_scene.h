@@ -37,13 +37,13 @@ namespace gfxc
         virtual void DrawCoordinateSystem();
         virtual void DrawCoordinateSystem(const glm::mat4 &viewMatrix, const glm::mat4 &projectionMaxtix);
 
-        virtual void RenderMesh(Mesh *mesh, Shader *shader, glm::vec3 position, glm::vec3 scale = glm::vec3(1));
+        virtual void RenderMesh(Mesh *mesh, Shader *shader, glm::vec3 position, glm::vec3 scale = glm::vec3(1), glm::vec3 carPos = glm::vec3(1));
         virtual void RenderMesh(Mesh *mesh, glm::vec3 position, glm::vec3 scale = glm::vec3(1));
 
         virtual void RenderMesh2D(Mesh *mesh, Shader *shader, const glm::mat3 &modelMatrix);
         virtual void RenderMesh2D(Mesh *mesh, const glm::mat3 &modelMatrix, const glm::vec3 &color) const;
 
-        virtual void RenderMesh(Mesh *mesh, Shader *shader, const glm::mat4 &modelMatrix);
+        virtual void RenderMesh(Mesh *mesh, Shader *shader, const glm::mat4 &modelMatrix, glm::vec3 carPos = glm::vec3(1));
 
         Camera *GetSceneCamera() const;
         InputController *GetCameraInput() const;
@@ -66,7 +66,7 @@ namespace gfxc
          */
         void glLineWidth(GLfloat width);
 
-     private:
+     public:
         Camera *camera;
         InputController *cameraInput;
 

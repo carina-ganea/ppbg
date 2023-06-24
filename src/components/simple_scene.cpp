@@ -54,7 +54,7 @@ void SimpleScene::InitResources()
     (void)SI;
 
     xozPlane = new Mesh("plane");
-    xozPlane->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "primitives"), "plane50.obj");
+    //xozPlane->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "primitives"), "plane50.obj");
 
     {
         std::vector<VertexFormat> vertices =
@@ -173,7 +173,7 @@ void SimpleScene::DrawCoordinateSystem(const glm::mat4 & viewMatrix, const glm::
 }
 
 
-void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, glm::vec3 position, glm::vec3 scale)
+void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, glm::vec3 position, glm::vec3 scale, glm::vec3 carPos)
 {
     if (!mesh || !shader || !shader->program)
         return;
@@ -182,7 +182,7 @@ void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, glm::vec3 position, g
     shader->Use();
     glUniformMatrix4fv(shader->loc_view_matrix, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
     glUniformMatrix4fv(shader->loc_projection_matrix, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
-
+    glUniform3f(glGetUniformLocation(shader->program, "carPos"), carPos.x, carPos.y, carPos.z);
     glm::mat4 model(1);
     model = glm::translate(model, position);
     model = glm::scale(model, scale);
@@ -243,7 +243,7 @@ void SimpleScene::RenderMesh2D(Mesh * mesh, const glm::mat3 & modelMatrix, const
 }
 
 
-void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, const glm::mat4 & modelMatrix)
+void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, const glm::mat4 & modelMatrix, glm::vec3 carPos)
 {
     if (!mesh || !shader || !shader->program)
         return;
@@ -253,6 +253,8 @@ void SimpleScene::RenderMesh(Mesh * mesh, Shader * shader, const glm::mat4 & mod
     glUniformMatrix4fv(shader->loc_view_matrix, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
     glUniformMatrix4fv(shader->loc_projection_matrix, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
     glUniformMatrix4fv(shader->loc_model_matrix, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+    glUniform3f(glGetUniformLocation(shader->program, "carPos"), carPos.x, carPos.y, carPos.z);
 
     mesh->Render();
 }
